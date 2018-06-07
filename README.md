@@ -1,8 +1,6 @@
 # Irudd Blog
 Combination personal blog and a way to experiment with new tech. May or may not contain actual posts at some point.
 
-Interval timer app for hangboarding. (Finger training for rock climbing)
-
 Based on the angular template app created using: dotnet new angular.
 
 * Debug using npm: `dotnet run`
