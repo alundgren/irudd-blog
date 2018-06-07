@@ -1,0 +1,26 @@
+<div class="container">
+    <!-- Margin used to push it down far enough where the editor wont overlap the header. Probably better to hide the nav here and just have back -->
+    <div class="row" style="margin-top:75px" *ngIf="isSignedIn(); else notSignedIn">
+        <form>
+            <div class="row">
+                <div class="col-xs-12" id="posteditorcontainer">
+                    <app-markdown-editor name="content" [(ngModel)]="content"></app-markdown-editor>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="title" name="title" placeholder="Post title">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" (click)="createPost()" [disabled]="creatingPost">{{creatingPost ? 'Creating...' : 'Create post'}}</button>
+                        </span>
+                    </div>             
+                </div>
+            </div>
+        </form>   
+    </div>
+    <ng-template #notSignedIn>
+        <p>You need to <a [routerLink]='["/signin"]'>Sign in</a> as the owner of this blog to post.</p>
+    </ng-template>
+</div>

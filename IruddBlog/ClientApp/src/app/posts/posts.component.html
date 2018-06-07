@@ -1,0 +1,31 @@
+<div>
+
+    <div class="blog-header">
+      <h1 class="blog-title">Irudd's programming blog</h1>
+      <p class="lead blog-description">Just some posts about my own experiences exploring and learning about new technologies or ideas.</p>
+    </div>
+
+    <div class="row">
+
+      <div class="col-sm-8 blog-main">
+        <div class="blog-post" *ngFor="let p of posts">
+          <a href="{{'/posts/' + p.postId}}"><h2 class="blog-post-title">{{p.title}}</h2></a>
+          <p class="blog-post-meta">{{p.publicationDate}}</p>
+        </div>
+      </div><!-- /.blog-main -->
+
+      <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+        <div class="sidebar-module sidebar-module-inset">
+          <p><input type="text" placeholder="Search" autocomplete="off" /></p>
+        </div>
+        <div class="sidebar-module">
+          <h4>Elsewhere</h4>
+          <ol class="list-unstyled">
+            <li><a href="https://github.com/alundgren">GitHub</a></li>
+            <li><a href="https://twitter.com/alun_se">Twitter</a></li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+</div>

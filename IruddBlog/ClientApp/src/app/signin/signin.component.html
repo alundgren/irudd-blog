@@ -1,0 +1,6 @@
+<div *ngIf="isSignedIn(); else notSignedInBlock">
+    <p><a class="btn-auth btn-google" (click)="signOut($event)">Sign out</a></p>  
+</div>
+<ng-template #notSignedInBlock>
+    <p><a class="btn-auth btn-google" (click)="signInWithGoogle($event)">Sign in with <b>Google</b></a></p>  
+</ng-template>
