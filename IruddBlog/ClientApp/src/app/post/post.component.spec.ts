@@ -8,6 +8,7 @@ import { ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from "@angular/router/testing";
 import { Pipe, PipeTransform } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { MarkdownViewerComponent } from '../markdown-viewer/markdown-viewer.component'
 
 @Pipe({name: 'safehtml'})
 class MockHtmlPipe implements PipeTransform {
@@ -29,15 +30,15 @@ class MockBlogService implements IBlogService {
   }
   getMetadata(postId: string): Observable<IPostMetadata> {
     return new Observable<IPostMetadata>((observer) => observer.next({
-      postId: 'p1',
-      title: 'First post',
-      publicationDate: new Date()
+      PostId: 'p1',
+      Title: 'First post',
+      PublicationDate: new Date()
     }));
   }
   getMetadatas(): Observable<IPostMetadata[]> {
     return new Observable<IPostMetadata[]>((observer) => {
       setTimeout(() => {
-        observer.next([{ postId : 'p1', publicationDate: new Date(), title: 'First post' }, { postId : 'p2', publicationDate: new Date(), title: 'Second post' }])  
+        observer.next([{ PostId : 'p1', PublicationDate: new Date(), Title: 'First post' }, { PostId : 'p2', PublicationDate: new Date(), Title: 'Second post' }])  
       }, 10);
     })
   }
@@ -50,7 +51,7 @@ describe('PostComponent', () => {
   beforeEach(async(() => {
     let blogService = new MockBlogService();
     TestBed.configureTestingModule({
-      declarations: [ PostComponent, MockHtmlPipe ],
+      declarations: [ PostComponent, MockHtmlPipe, MarkdownViewerComponent ],
       providers: [{ provide: BlogService, useValue: blogService}, 
         { provide: ActivatedRoute, useValue: { paramMap: Observable.of(convertToParamMap({id: 'p1' }))}} ]
     })

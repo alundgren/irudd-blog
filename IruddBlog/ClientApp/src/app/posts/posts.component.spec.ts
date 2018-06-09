@@ -1,10 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PostsComponent } from './posts.component';
-import { BlogService, IPostMetadata, IBlogService, ICreatePostResult } from '../blog.service';
+import { BlogService, IPostMetadata, IBlogService, ICreatePostResult, BlogSettings } from '../blog.service';
 import { Observable } from 'rxjs/Observable';
 import { equal } from 'assert';
 
 class MockBlogService implements IBlogService {
+  getSettings(): Observable<BlogSettings> {
+    throw new Error("Method not implemented.");
+  }
   createPost(markdownContent: string, title: string): Observable<ICreatePostResult> {
     throw new Error("Method not implemented.");
   }
@@ -17,7 +20,7 @@ class MockBlogService implements IBlogService {
   getMetadatas(): Observable<IPostMetadata[]> {
     return new Observable<IPostMetadata[]>((observer) => {
       setTimeout(() => {
-        observer.next([{ postId : 'p1', publicationDate: new Date(), title: 'First post' }, { postId : 'p2', publicationDate: new Date(), title: 'Second post' }])  
+        observer.next([{ PostId : 'p1', PublicationDate: new Date(), Title: 'First post' }, { PostId : 'p2', PublicationDate: new Date(), Title: 'Second post' }])  
       }, 10);
     })
   }

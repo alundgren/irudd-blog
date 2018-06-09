@@ -19,9 +19,15 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "./thirdparty/google-code-prettify/prettify.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "./thirdparty/pagedown/Markdown.Converter.js", 
+        "./thirdparty/pagedown/Markdown.Sanitizer.js", 
+        "./thirdparty/pagedown/Markdown.Editor.js",
+        "./thirdparty/google-code-prettify/prettify.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

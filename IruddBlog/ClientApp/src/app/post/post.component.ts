@@ -2,6 +2,7 @@ import { Component, OnInit, Pipe } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BlogService } from '../blog.service';
 import { Converter } from 'showdown';
+import { MarkdownViewerComponent } from '../markdown-viewer/markdown-viewer.component'
 
 @Component({
   selector: 'app-post',
@@ -25,7 +26,7 @@ export class PostComponent implements OnInit {
       this.postId = p.get('id');
       this.blogService.getContent(this.postId).subscribe(c => {
         this.blogService.getMetadata(this.postId).subscribe(m => {
-          this.content = this.markdownConverter.makeHtml(c);
+          this.content = c;//this.markdownConverter.makeHtml(c);
           this.title = m.Title;
           this.publicationDate = m.PublicationDate;
         })
