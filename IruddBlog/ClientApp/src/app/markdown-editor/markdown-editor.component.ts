@@ -8,14 +8,17 @@ import {
   forwardRef,
   ElementRef,
   ViewChild,
-  AfterViewInit,
   Input,
   OnDestroy,
   ModuleWithProviders,
-  Inject
+  Inject,
+  Output,
+  EventEmitter,
+  AfterContentInit,
+  AfterViewInit
 } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms'
+import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms'
 import * as SimpleMDE from 'simplemde'
 import { NgModelBase } from './ngmodelbase';
 
@@ -34,46 +37,36 @@ interface IAddImageResult {
 @Component({
   selector: 'app-markdown-editor',
   templateUrl: './markdown-editor.component.html',
-  styleUrls: ['./markdown-editor.component.css'],
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => MarkdownEditorComponent),
-    multi: true
-  }]
+  styleUrls: ['./markdown-editor.component.css']
 })
-export class MarkdownEditorComponent extends NgModelBase implements AfterViewInit, OnDestroy {  
+export class MarkdownEditorComponent implements OnInit  {
+  @ViewChild('angularref') 
+  textarea: ElementRef
+
+  @Output() markdownChanged = new EventEmitter<string>();
+
   constructor(private httpClient: HttpClient, private socialAuthService: AuthService) {
-    super()
+  
   }
 
   authState : SocialUser;
 
-  @ViewChild('simplemde') 
-  textarea: ElementRef
-
   ngOnInit() {
+    var h: HTMLTextAreaElement
+    h = this.textarea.nativeElement
+    h.addEventListener('input', () => {
+      this.markdownChanged.emit(h.value);
+    })
     this.socialAuthService.authState.subscribe(authState => {
       this.authState = authState;
-    })    
-  }
-
-  private simplemde: SimpleMDE
-  private tmpValue = null
-
-  ngAfterViewInit() {
-    const config : any = { }
-    config.element = this.textarea.nativeElement
-
-    this.simplemde = new SimpleMDE(config)
-
-    if (this.tmpValue) {
-      this.simplemde.value(this.tmpValue)
-      this.tmpValue = null
-    }
-
-    this.simplemde.codemirror.on('change', () => {
-      this.value = this.simplemde.value()
     })
+
+    let converter = new Markdown.Converter();
+    converter.hooks.chain('postNormalization', (text, rgb) => {      
+      return text;
+    })
+    let editor = new Markdown.Editor(converter);    
+    editor.run();
 
     let documentWithOnPaste : IDocumentOnPaste = (<any>document);
     documentWithOnPaste.onpaste = (event) => {
@@ -87,8 +80,13 @@ export class MarkdownEditorComponent extends NgModelBase implements AfterViewIni
           if(!isTargetedAtEditor) {
               return;
           }
-
+          
           var items = event.clipboardData.items;
+          if(items.length != 1 || items[0].kind != 'file') {
+            return;
+          }
+
+          event.preventDefault();
           var blob = items[0].getAsFile();
           var reader = new FileReader();
           reader.onload = (event: any) => {
@@ -96,10 +94,9 @@ export class MarkdownEditorComponent extends NgModelBase implements AfterViewIni
                   let dataUrl = event.target.result;
                   if(dataUrl.startsWith('data:image/')) {
                     let headers = new HttpHeaders().set('authorization', 'Bearer ' + this.authState.idToken);
-                    this.httpClient.post<IAddImageResult>('/api/temporary-images/add-as-dataurl', { dataurl: dataUrl }, { headers: headers }).subscribe(result => {
-                      let pos = this.simplemde.codemirror.getCursor();
-                      this.simplemde.codemirror.setSelection(pos, pos);
-                      this.simplemde.codemirror.replaceSelection('![](' + result.relativeUrl + ')');                      
+                    this.httpClient.post<IAddImageResult>('/api/temporary-images/add-as-dataurl', { dataurl: dataUrl }, { headers: headers }).subscribe(result => {                      
+                      this.insertTextAtCursor(this.textarea.nativeElement, '![](' + result.relativeUrl + ')');
+                      this.textarea.nativeElement.dispatchEvent(new Event('input')) //Pagedown doesnt listen to change only input, keypress and keydown so this is just to fire the change detection
                     })
                   }
               } catch(err2) {
@@ -110,11 +107,21 @@ export class MarkdownEditorComponent extends NgModelBase implements AfterViewIni
       } catch (err) {
           console.log(err)
       }
-    }    
+    }
   }
 
-  ngOnDestroy() {
-    this.simplemde = null
+  insertTextAtCursor(myField : HTMLTextAreaElement, myValue: string) {
+    if (myField.selectionStart || myField.selectionStart == 0) {
+        var startPos = myField.selectionStart;
+        var endPos = myField.selectionEnd;
+        myField.value = myField.value.substring(0, startPos)
+            + myValue
+            + myField.value.substring(endPos, myField.value.length);
+        myField.selectionStart = startPos + myValue.length; 
+        myField.selectionEnd = startPos + myValue.length;
+    } else {
+        myField.value += myValue;
+    }
   }
 }
 

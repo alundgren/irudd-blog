@@ -1,0 +1,171 @@
+.pagedown body 
+{ 
+    font-family: sans-serif;
+}
+/*
+.pagedown body 
+{ 
+	background-color: White;
+    font-family: sans-serif;
+}
+*/
+
+.pagedown blockquote {
+	font-style: italic;
+}
+
+/*
+.pagedown blockquote {
+	border-left: 2px dotted #888;
+	padding-left: 5px;
+	background: #d0f0ff;
+}
+*/
+.pagedown .wmd-panel
+{
+	display: flex;
+	flex-direction: column;
+}
+
+.pagedown .pagedown-editor 
+{
+	display: flex;
+	flex-direction: row;	
+	flex-grow:1;
+	min-height: 500px;	
+}
+/*
+.pagedown .wmd-panel
+{
+	margin-left: 25%;
+	margin-right: 25%;
+	width: 50%;
+	min-width: 500px;
+}
+*/
+
+.pagedown .wmd-button-bar 
+{
+	
+}
+
+.pagedown .wmd-input 
+{ 
+	flex-grow:1;
+}
+/*
+.pagedown .wmd-button-bar 
+{
+	width: 100%;
+	background-color: Silver; 
+}
+
+.pagedown .wmd-input 
+{ 
+	height: 300px;
+	width: 100%;
+	background-color: Gainsboro;
+	border: 1px solid DarkGray;
+}
+
+*/
+
+.pagedown .wmd-preview 
+{
+	margin-left:10px; 
+	padding: 5px;
+	border: solid 2px black;
+	flex-grow:1;
+	min-height: 500px;		
+}
+
+/*
+.pagedown .wmd-preview 
+{ 
+	background-color: #c0e0ff; 
+}
+*/
+.pagedown .wmd-button-row 
+{
+	position: relative; 
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	margin-top: 10px;
+	padding: 0px;  
+	height: 20px;
+}
+
+.pagedown .wmd-spacer
+{
+	width: 1px; 
+	height: 20px; 
+	margin-left: 14px;
+	
+	position: absolute;
+	background-color: Silver;
+	display: inline-block; 
+	list-style: none;
+}
+
+.pagedown .wmd-button {
+    width: 20px;
+    height: 20px;
+    padding-left: 2px;
+    padding-right: 3px;
+    position: absolute;
+    display: inline-block;
+    list-style: none;
+    cursor: pointer;
+}
+
+.pagedown .wmd-button > span {
+    background-image: url(./assets/pagedown-buttons.png);
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+.pagedown .wmd-spacer1
+{
+    left: 50px;
+}
+.pagedown .wmd-spacer2
+{
+    left: 175px;
+}
+.pagedown .wmd-spacer3
+{
+    left: 300px;
+}
+
+.pagedown .wmd-prompt-background
+{
+	background-color: Black;
+}
+
+.pagedown .wmd-prompt-dialog
+{
+	border: 1px solid #999999;
+	background-color: #F5F5F5;
+}
+
+.pagedown .wmd-prompt-dialog > div {
+	font-size: 0.8em;
+	font-family: arial, helvetica, sans-serif;
+}
+
+
+.pagedown .wmd-prompt-dialog > form > input[type="text"] {
+	border: 1px solid #999999;
+	color: black;
+}
+
+.pagedown .wmd-prompt-dialog > form > input[type="button"]{
+	border: 1px solid #888888;
+	font-family: trebuchet MS, helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: bold;
+}

@@ -19,6 +19,7 @@
       "prefix": "app",
       "styles": [
         "styles.css",
+        "pagedown.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "./thirdparty/google-code-prettify/prettify.css"
       ],

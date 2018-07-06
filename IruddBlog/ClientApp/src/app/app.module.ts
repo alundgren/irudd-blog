@@ -22,6 +22,7 @@ import { PostComponent } from './post/post.component'
 import { SigninComponent } from './signin/signin.component';
 import { MarkdownViewerComponent } from './markdown-viewer/markdown-viewer.component';
 import { SafehtmlPipe } from './safehtml.pipe';
+import { LayoutService } from './layout.service';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { SafehtmlPipe } from './safehtml.pipe';
     ]),
     SocialLoginModule
   ],
-  providers: [BlogService],
+  providers: [BlogService, LayoutService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

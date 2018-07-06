@@ -32,4 +32,8 @@ export class PostNewComponent implements OnInit {
       this.authState = authState;
     })
   }
+
+  onMarkdownChanged(content: string) {
+    this.content = content;
+  }
 }

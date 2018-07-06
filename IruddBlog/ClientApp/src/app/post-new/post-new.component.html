@@ -1,21 +1,21 @@
-<div class="container">
+<div>
     <!-- Margin used to push it down far enough where the editor wont overlap the header. Probably better to hide the nav here and just have back -->
-    <div class="row" style="margin-top:75px" *ngIf="isSignedIn(); else notSignedIn">
+    <div class="row" style="margin-top:15px;width:100%" *ngIf="isSignedIn(); else notSignedIn">
         <form>
-            <div class="row">
-                <div class="col-xs-12" id="posteditorcontainer">
-                    <app-markdown-editor name="content" [(ngModel)]="content"></app-markdown-editor>
-                </div>
-            </div>
-            <br>
-            <div class="row">
+        <div class="row">
                 <div class="col-xs-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" [(ngModel)]="title" name="title" placeholder="Post title">
+                        <input type="text" class="form-control" [(ngModel)]="title" name="title" placeholder="Post title" autocomplete="off">
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" (click)="createPost()" [disabled]="creatingPost">{{creatingPost ? 'Creating...' : 'Create post'}}</button>
                         </span>
                     </div>             
+                </div>
+            </div>
+            <br>            
+            <div class="row">
+                <div class="col-xs-12" id="posteditorcontainer">
+                    <app-markdown-editor name="content" (markdownChanged)="onMarkdownChanged($event)"></app-markdown-editor>
                 </div>
             </div>
         </form>   
