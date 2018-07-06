@@ -15,7 +15,8 @@ import {
   Output,
   EventEmitter,
   AfterContentInit,
-  AfterViewInit
+  AfterViewInit,
+  AfterViewChecked
 } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms'
@@ -39,7 +40,7 @@ interface IAddImageResult {
   templateUrl: './markdown-editor.component.html',
   styleUrls: ['./markdown-editor.component.css']
 })
-export class MarkdownEditorComponent implements OnInit  {
+export class MarkdownEditorComponent implements OnInit, AfterViewChecked  {
   @ViewChild('angularref') 
   textarea: ElementRef
 
@@ -57,14 +58,27 @@ export class MarkdownEditorComponent implements OnInit  {
     h.addEventListener('input', () => {
       this.markdownChanged.emit(h.value);
     })
+    h.addEventListener('keydown', e => {
+      if(e.key=='Tab') {        
+        if(e.shiftKey) {
+          //TODO: Remove a tab here
+        } else {
+          e.preventDefault();
+          var s = h.selectionStart;
+          h.value = h.value.substring(0, h.selectionStart) + "\t" + h.value.substring(h.selectionEnd);
+          h.selectionEnd = s + 1; 
+        }
+      }
+    })
+
     this.socialAuthService.authState.subscribe(authState => {
       this.authState = authState;
     })
 
     let converter = new Markdown.Converter();
-    converter.hooks.chain('postNormalization', (text, rgb) => {      
-      return text;
-    })
+    converter.hooks.chain("postConversion", function (text, rbg) {
+      return text ? text.replace('<pre>', '<pre class="prettyprint">') : text;
+    });    
     let editor = new Markdown.Editor(converter);    
     editor.run();
 
@@ -108,6 +122,10 @@ export class MarkdownEditorComponent implements OnInit  {
           console.log(err)
       }
     }
+  }
+
+  ngAfterViewChecked() {
+    PR.prettyPrint();
   }
 
   insertTextAtCursor(myField : HTMLTextAreaElement, myValue: string) {
