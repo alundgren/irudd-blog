@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace IruddBlog
 {
@@ -31,12 +32,13 @@ namespace IruddBlog
             services.AddSingleton<IGetBlogPostsCommand, GetBlogPostsCommand>();
             services.AddSingleton<INewBlogPostCommand, NewBlogPostCommand>();
             services.AddSingleton<ITemporaryImageHostCommand, TemporaryImageHostCommand>();
-            
-            services.AddMvc();
-            
+
+            services.AddMvc(option => option.EnableEndpointRouting = false);//.AddNewtonsoftJson();
+
             services.AddAuthentication(BearerTokenWithGoogleDefaults.AuthenticationScheme)
-                .AddBearerTokenWithGoogleId(o => {
-                    
+                .AddBearerTokenWithGoogleId(o =>
+                {
+
                 });
 
             services.AddAuthorization(options =>
@@ -54,7 +56,7 @@ namespace IruddBlog
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IPostBackupServiceFactory postBackupServiceFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IPostBackupServiceFactory postBackupServiceFactory)
         {
             var backupService = postBackupServiceFactory.CreateService();
             backupService.DownloadPostsFromBackupIfNoLocalPostsExist();
@@ -67,7 +69,7 @@ namespace IruddBlog
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            
+
             app.UseAuthentication();
 
             app.UseStaticFiles();

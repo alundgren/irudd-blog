@@ -7,9 +7,9 @@ namespace IruddBlog.Infra.Settings
     public class BlogSettings : IBlogSettings
     {
         private IConfiguration configuration;
-        private IHostingEnvironment environment;
+        private IWebHostEnvironment environment;
 
-        public BlogSettings(IConfiguration configuration, IHostingEnvironment environment)
+        public BlogSettings(IConfiguration configuration, IWebHostEnvironment environment)
         {
             this.configuration = configuration;
             this.environment = environment;
@@ -28,7 +28,7 @@ namespace IruddBlog.Infra.Settings
         private string Req(string settingName)
         {
             var v = configuration.GetValue<string>(settingName);
-            if(string.IsNullOrWhiteSpace(v))
+            if (string.IsNullOrWhiteSpace(v))
                 throw new Exception($"Missing setting {settingName}");
             return v;
         }
